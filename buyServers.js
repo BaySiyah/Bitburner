@@ -19,9 +19,25 @@ function ramFormat(ns, ram) {
 
 /** @param {NS} ns */
 export async function main(ns) {
-	var servers = ns.getPurchasedServers();
-	var exponent = 1;
+	var data = ns.flags([
+		["exponent", 1],
+		["delay", 5000],
+	]);
+
+	if (data.exponent < 1 || data.exponent > 20) {
+		ns.tprint("ERROR   exponent has to be a number between 1 and 20!");
+		ns.exit();
+	}
+	if (data.delay < 0) {
+		ns.tprint("ERROR   delay must be greater than 0!");
+		ns.exit();
+	}
+
+	var delay = data.delay;
+	var exponent = data.exponent;
 	var ram = Math.pow(2, exponent);
+
+	var servers = ns.getPurchasedServers();
 	var cost = ns.getPurchasedServerCost(ram);
 
 	while (servers.length < ns.getPurchasedServerLimit()) {
@@ -30,7 +46,8 @@ export async function main(ns) {
 		let name = createGUID();
 		ns.purchaseServer(name, ram);
 		servers.push(name);
-		ns.tprintf('purchased server ' + name);
+		ns.toast("Purchased a new server " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO);
+		await ns.sleep(delay);
 	}
 
 	while (exponent <= MAX_EXPONENT) {
@@ -47,7 +64,8 @@ export async function main(ns) {
 			while (ns.getServerMoneyAvailable(ROOT) < cost)
 				await ns.sleep(DELAY);
 			ns.upgradePurchasedServer(server, ram);
-			ns.tprintf('upgraded server ' + server);
+			ns.toast("Upgraded server " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO);
+			await ns.sleep(delay);
 		}
 	}
 }

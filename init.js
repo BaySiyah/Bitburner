@@ -8,11 +8,11 @@ export async function main(ns) {
 	ns.wget(REPO + "/grow.js", "/scripts/grow.js", HOME)
 	ns.wget(REPO + "/hack.js", "/scripts/hack.js", HOME)
 
-	ns.wget(REPO + "/root.js", "root.js", HOME)
 	ns.wget(REPO + "/hacknet.js", "hacknet.js", HOME)
-	ns.wget(REPO + "/buyServers.js", "buyServers.js", HOME)
+	ns.wget(REPO + "/purchaseServers.js", "purchaseServers.js", HOME)
+	ns.wget(REPO + "/purchaseServerInfo.js", "purchaseServerInfo.js", HOME)
+	ns.wget(REPO + "/root.js", "root.js", HOME)
 	ns.wget(REPO + "/simplehack.js", "simplehack.js", HOME)
-	ns.wget(REPO + "/smarthack.js", "smarthack.js", HOME)
-	ns.wget(REPO + "/start_smarthack.js", "start_smarthack.js", HOME)
+	ns.wget(REPO + "/test.js", "test.js", HOME)
 
 }

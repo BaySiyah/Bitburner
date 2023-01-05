@@ -38,9 +38,21 @@ function getServers(ns) {
 
 /** @param {NS} ns */
 export async function main(ns) {
+	var data = ns.flags([
+		["level", 0],
+	]);
+
+	if (data.level < 0) {
+		ns.tprintf("ERROR    level has to be larger than 0!");
+		ns.exit();
+	}
+
+	var levelLimit = data.level;
 	let servers = getServers(ns);
 	for (const server of servers) {
 		if (ns.isRunning(SCRIPT, HOME, server))
+			continue;
+		if (levelLimit > 0 && ns.getServerRequiredHackingLevel(server) > levelLimit)
 			continue;
 		let pid = ns.exec(SCRIPT, HOME, 1, server);
 		ns.tprintf("INFO     started smarthack: " + server + " (PID " + pid + ")");

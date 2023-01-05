@@ -80,15 +80,15 @@ function execute(ns, script, target, threads, delay) {
  * */
 export async function delay(ns, message, delay, target) {
 	const STEP = 1000;
-	const MONEY_TEXT = " | " + ns.nFormat(ns.getServerMaxMoney(target), "$(0.000)a");
-	const SECURITY_TEXT = " | " + ns.nFormat(ns.getServerMinSecurityLevel(target), "0.000");
+	// const MONEY_TEXT = " | " + ns.nFormat(ns.getServerMaxMoney(target), "$(0.000)a");
+	// const SECURITY_TEXT = " | " + ns.nFormat(ns.getServerMinSecurityLevel(target), "0.000");
 	while (delay > 0) {
 		ns.clearLog();
-		let money = ns.getServerMoneyAvailable(target);
-		let security = ns.getServerSecurityLevel(target);
+		// let money = ns.getServerMoneyAvailable(target);
+		// let security = ns.getServerSecurityLevel(target);
 		ns.print(target);
-		ns.print(ns.nFormat(money, "$(0.000)a") + MONEY_TEXT);
-		ns.print(ns.nFormat(security, "0.000") + SECURITY_TEXT);
+		// ns.print(ns.nFormat(money, "$(0.000)a") + MONEY_TEXT);
+		// ns.print(ns.nFormat(security, "0.000") + SECURITY_TEXT);
 		ns.print(message);
 		ns.print(ns.tFormat(delay));
 		delay -= STEP;
@@ -165,12 +165,12 @@ export async function main(ns) {
 		message += ns.nFormat((hack_threads - rest) / hack_threads, '000%') + "\n";
 
 		await delay(ns, message + "grow", time * 0.8, target);
-		money = ns.getServerMoneyAvailable(target);
+		// money = ns.getServerMoneyAvailable(target);
 		await delay(ns, message + "hack", time * 0.05, target);
-		let hacked_money = money - ns.getServerMoneyAvailable(target);
+		// let hacked_money = money - ns.getServerMoneyAvailable(target);
+		// if (hacked_money > 0)
+		// 	ns.tprintf("SUCCESS  " + ns.nFormat(hacked_money, "$(0.000)a") + " -> " + target);
 		await delay(ns, message + "weaken", time * 0.15, target);
-		if (hacked_money > 0)
-			ns.tprintf("SUCCESS  " + ns.nFormat(hacked_money, "$(0.000)a") + " -> " + target);
 		await ns.sleep(1000);
 	}
 }
