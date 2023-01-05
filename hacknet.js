@@ -61,11 +61,10 @@ export async function main(ns) {
 			cores += 1;
 		}
 
+		ns.toast("Upgraded Node " + currentNode);
 		currentNode += 1;
-		if (currentNode == ns.hacknet.numNodes()) {
+		if (currentNode == ns.hacknet.numNodes())
 			await purchaseNode(ns);
-			ns.toast("Purchased hacknet node " + currentNode);
-		}
 	}
 
 }
