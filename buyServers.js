@@ -39,14 +39,17 @@ export async function main(ns) {
 
 	var servers = ns.getPurchasedServers();
 	var cost = ns.getPurchasedServerCost(ram);
-
+	
+	let counter = 0;
 	while (servers.length < ns.getPurchasedServerLimit()) {
+		counter += 1;
 		while (ns.getServerMoneyAvailable(ROOT) < cost)
 			await ns.sleep(DELAY);
-		let name = createGUID();
+		// let name = createGUID();
+		let name = ".server_" + ns.nFormat(counter, '000');
 		ns.purchaseServer(name, ram);
 		servers.push(name);
-		ns.toast("Purchased a new server " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO);
+		ns.toast("Purchased " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO, 5000);
 		await ns.sleep(delay);
 	}
 
@@ -64,7 +67,7 @@ export async function main(ns) {
 			while (ns.getServerMoneyAvailable(ROOT) < cost)
 				await ns.sleep(DELAY);
 			ns.upgradePurchasedServer(server, ram);
-			ns.toast("Upgraded server " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO);
+			ns.toast("Upgraded " + server + " -> " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO, 5000);
 			await ns.sleep(delay);
 		}
 	}
