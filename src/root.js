@@ -69,7 +69,7 @@ export async function main(ns) {
 		data = ns.getServer(server);
 		if (data.openPortCount >= data.numOpenPortsRequired) {
 			ns.nuke(server);
-			ns.toast("Nuked " + server, ns.enums.ToastVariant.SUCCESS);
+			ns.toast('Nuked ' + server, ns.enums.ToastVariant.SUCCESS);
 		}
 	}
 }

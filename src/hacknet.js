@@ -1,4 +1,4 @@
-const ROOT = "home";
+const ROOT = 'home';
 
 /** @param {NS} ns */
 export async function purchaseNode(ns) {
@@ -10,17 +10,17 @@ export async function purchaseNode(ns) {
 
 /** @param {NS} ns */
 export async function main(ns) {
-	ns.disableLog("ALL");
+	ns.disableLog('ALL');
 	if (ns.getHostname() != ROOT) {
-		let message = "calling " + ns.getScriptName() + " not from " + ROOT;
+		let message = 'calling ' + ns.getScriptName() + ' not from ' + ROOT;
 		ns.toast(message, ns.enums.ToastVariant.ERROR);
 		ns.exit();
 	}
 
 	var data = ns.flags([
-		["level", 200],
-		["ram", 64],
-		["cores", 16],
+		['level', 200],
+		['ram', 64],
+		['cores', 16],
 	]);
 
 	const NODE_MAX_LEVEL = data.level;
@@ -31,7 +31,7 @@ export async function main(ns) {
 	var lastNode = ns.hacknet.maxNumNodes();
 	if (ns.hacknet.numNodes() == 0) {
 		await purchaseNode(ns);
-		ns.toast("Purchased hacknet node " + currentNode);
+		ns.toast('Purchased hacknet node ' + currentNode);
 	}
 
 	while (currentNode < lastNode) {
@@ -61,7 +61,7 @@ export async function main(ns) {
 			cores += 1;
 		}
 
-		ns.toast("Upgraded Node " + currentNode);
+		ns.toast('Upgraded Node ' + currentNode);
 		currentNode += 1;
 		if (currentNode == ns.hacknet.numNodes())
 			await purchaseNode(ns);

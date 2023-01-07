@@ -1,8 +1,8 @@
 const HOME = 'home';
 
-const WEAKEN_SCRIPT = "/scripts/weaken.js";
-const GROW_SCRIPT = "/scripts/grow.js";
-const HACK_SCRIPT = "/scripts/hack.js";
+const WEAKEN_SCRIPT = '/scripts/weaken.js';
+const GROW_SCRIPT = '/scripts/grow.js';
+const HACK_SCRIPT = '/scripts/hack.js';
 
 const SCRIPTS = [WEAKEN_SCRIPT, GROW_SCRIPT, HACK_SCRIPT];
 
@@ -80,11 +80,11 @@ function execute(ns, script, target, threads, delay) {
  * */
 export async function delay(ns, message, delay, target) {
 	const STEP = 1000;
+	delay -= Math.floor(delay / STEP) * 25;
 	while (delay > 0) {
 		ns.clearLog();
 		ns.print(target);
-		ns.print(message);
-		ns.print(ns.tFormat(delay));
+		ns.print(message + ' (' + ns.tFormat(delay) + ')');
 		delay -= STEP;
 		await ns.sleep(STEP);
 	}
@@ -93,12 +93,12 @@ export async function delay(ns, message, delay, target) {
 
 /** @param {NS} ns */
 export async function main(ns) {
-	ns.disableLog("ALL");
+	ns.disableLog('ALL');
 	// ns.tail();
 
 	const target = ns.args.shift();
 	if (!ns.serverExists(target)) {
-		ns.toast(target + " does not exists!", ns.enums.ToastVariant.ERROR);
+		ns.toast(target + ' does not exists!', ns.enums.ToastVariant.ERROR);
 		ns.exit();
 	}
 
@@ -114,7 +114,7 @@ export async function main(ns) {
 		let time = ns.getWeakenTime(target);
 		let threads = Math.floor(1 + (security - SECURITY_MIN) / 0.05);
 		execute(ns, WEAKEN_SCRIPT, target, threads, 0);
-		await delay(ns, "pre weaken", time, target);
+		await delay(ns, 'pre weaken', time, target);
 		security = ns.getServerSecurityLevel(target);
 	}
 
@@ -132,8 +132,8 @@ export async function main(ns) {
 
 		execute(ns, GROW_SCRIPT, target, grow_threads, 0);
 		execute(ns, WEAKEN_SCRIPT, target, weaken_threads, 0);
-		await delay(ns, "grow " + grow_threads, time * 0.8, target);
-		await delay(ns, "weaken " + weaken_threads, time * 0.2, target);
+		await delay(ns, 'grow ' + grow_threads, time * 0.8, target);
+		await delay(ns, 'weaken ' + weaken_threads, time * 0.2, target);
 		money = ns.getServerMoneyAvailable(target);
 	}
 
@@ -144,25 +144,25 @@ export async function main(ns) {
 		let time = ns.getWeakenTime(target);
 
 		let grow_threads = Math.floor(1 + ns.growthAnalyze(target, MONEY_MAX / money));
-		let hack_threads = Math.floor(1 + 0.75 / ns.hackAnalyze(target));
+		let hack_threads = Math.floor(1 + 0.65 / ns.hackAnalyze(target));
 		let weaken_threads = Math.floor(1 + (grow_threads * 0.004 + hack_threads * 0.002) / 0.05);
 
 		execute(ns, WEAKEN_SCRIPT, target, weaken_threads, 0);
 		execute(ns, GROW_SCRIPT, target, grow_threads, 0);
 		execute(ns, HACK_SCRIPT, target, hack_threads, time * 0.6);
 
-		await delay(ns, "grow", time * 0.8, target);
+		await delay(ns, 'grow', time * 0.8, target);
 		money = ns.getServerMoneyAvailable(target);
-		await delay(ns, "hack", time * 0.05, target);
+		await delay(ns, 'hack', time * 0.05, target);
 		let hacked_money = money - ns.getServerMoneyAvailable(target);
 		if (hacked_money > 0) {
 			ns.toast(
-				target + " " + ns.nFormat(hacked_money, "$(0.000)a"),
+				target + ' ' + ns.nFormat(hacked_money, '$(0.000)a'),
 				ns.enums.ToastVariant.SUCCESS,
 				5000,
 			);
 		}
-		await delay(ns, "weaken", time * 0.15, target);
+		await delay(ns, 'weaken', time * 0.15, target);
 		await ns.sleep(1000);
 	}
 }

@@ -1,5 +1,5 @@
 const ROOT = 'home';
-const REPO = 'https://raw.githubusercontent.com/BaySiyah/Bitburner/main'
+const REPO = 'https://raw.githubusercontent.com/BaySiyah/Bitburner/main/src'
 
 /** @param {NS} ns */
 export async function main(ns) {
@@ -20,17 +20,17 @@ export async function main(ns) {
 		'start_smarthacks.js',
 	]
 
-	ns.tprintf('downloading files from ' + REPO);
+	ns.tprintf('INFO     downloading files from ' + REPO);
 	for (const file of files) {
-		let source = file;
+		let source = '/' + file;
 		let target = file;
 		if (file.includes('/'))
-			target = '/' + file
+			target = source;
 
 		if (ns.fileExists(target, ROOT))
 			ns.rm(target, ROOT);
-		ns.wget(REPO + source, target, ROOT);
-		ns.tprintf('  -> ' + file);
-		ns.tprintf('SUCCESS  downloaded ' + files.length + ' file(s)');
+		await ns.wget(REPO + source, target, ROOT);
+		ns.tprintf('INFO     -> ' + source);
 	}
+	ns.tprintf('SUCCESS  downloaded ' + files.length + ' file(s)');
 }

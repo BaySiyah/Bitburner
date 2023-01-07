@@ -1,8 +1,8 @@
 const HOME = 'home';
 
-const WEAKEN_SCRIPT = "/scripts/weaken.js";
-const GROW_SCRIPT = "/scripts/grow.js";
-const HACK_SCRIPT = "/scripts/hack.js";
+const WEAKEN_SCRIPT = '/scripts/weaken.js';
+const GROW_SCRIPT = '/scripts/grow.js';
+const HACK_SCRIPT = '/scripts/hack.js';
 
 const SCRIPTS = [WEAKEN_SCRIPT, GROW_SCRIPT, HACK_SCRIPT];
 
@@ -78,11 +78,11 @@ export async function delay(ns, message, delay) {
 
 /** @param {NS} ns */
 export async function main(ns) {
-	ns.disableLog("ALL");
+	ns.disableLog('ALL');
 
 	const target = ns.args.shift();
 	if (!ns.serverExists(target)) {
-		ns.toast(target + " does not exists!", ns.enums.ToastVariant.ERROR);
+		ns.toast(target + ' does not exists!', ns.enums.ToastVariant.ERROR);
 		ns.exit();
 	}
 
@@ -103,9 +103,9 @@ export async function main(ns) {
 			let threads = Math.ceil((security - SECURITY_MIN) / 0.05);
 			let time = ns.getWeakenTime(target);
 			let rest = execute(ns, WEAKEN_SCRIPT, target, threads, 0);
-			let message = "weaken .." + (threads - rest) + " of " + threads + " threads"
-			message += "\n   money: " + ns.nFormat(money, "$(0.000)a");
-			message += "\nsecurity: " + ns.nFormat(security, "0.000");
+			let message = 'weaken ..' + (threads - rest) + ' of ' + threads + ' threads'
+			message += '\n   money: ' + ns.nFormat(money, '$(0.000)a');
+			message += '\nsecurity: ' + ns.nFormat(security, '0.000');
 			await delay(ns, message, time);
 			continue;
 		}
@@ -116,9 +116,9 @@ export async function main(ns) {
 			let threads = Math.ceil(ns.growthAnalyze(target, MONEY_MAX / money));;
 			let time = ns.getGrowTime(target);
 			let rest = execute(ns, GROW_SCRIPT, target, threads, 0);
-			let message = "grow .." + (threads - rest) + " of " + threads + " threads";
-			message += "\n   money: " + ns.nFormat(money, "$(0.000)a");
-			message += "\nsecurity: " + ns.nFormat(security, "0.000");
+			let message = 'grow ..' + (threads - rest) + ' of ' + threads + ' threads';
+			message += '\n   money: ' + ns.nFormat(money, '$(0.000)a');
+			message += '\nsecurity: ' + ns.nFormat(security, '0.000');
 			await delay(ns, message, time);
 			continue;
 		}
@@ -126,9 +126,9 @@ export async function main(ns) {
 		let threads = Math.ceil(0.5 / ns.hackAnalyze(target));
 		let time = ns.getHackTime(target);
 		let rest = execute(ns, HACK_SCRIPT, target, threads, 0);
-		let message = "hack .. " + (threads - rest) + " of " + threads + " threads";
-		message += "\n   money: " + ns.nFormat(money, "$(0.000)a");
-		message += "\nsecurity: " + ns.nFormat(security, "0.000");
+		let message = 'hack .. ' + (threads - rest) + ' of ' + threads + ' threads';
+		message += '\n   money: ' + ns.nFormat(money, '$(0.000)a');
+		message += '\nsecurity: ' + ns.nFormat(security, '0.000');
 		await delay(ns, message, time);
 	}
 }

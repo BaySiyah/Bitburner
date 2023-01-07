@@ -35,15 +35,15 @@ function killAll(ns) {
 
 /** @param {NS} ns */
 export async function main(ns) {
-	ns.disableLog("ALL");
+	ns.disableLog('ALL');
 
 	var data = ns.flags([
-		["kill", false],
-		["percent", 0.5],
+		['kill', false],
+		['percent', 0.5],
 	]);
 
 	if (data.percent <= 0 || data.percent > 1) {
-		ns.tprintf("ERROR   percent has to be grateder than 0 and less or equals 1!");
+		ns.tprintf('ERROR   percent has to be grateder than 0 and less or equals 1!');
 		ns.exit();
 	}
 

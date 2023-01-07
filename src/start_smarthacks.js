@@ -1,5 +1,5 @@
 const HOME = 'home';
-const SCRIPT = "smarthack.js"
+const SCRIPT = 'smarthack.js'
 
 /** 
  * @param {NS} ns 
@@ -39,11 +39,11 @@ function getServers(ns) {
 /** @param {NS} ns */
 export async function main(ns) {
 	var data = ns.flags([
-		["level", 0],
+		['level', 0],
 	]);
 
 	if (data.level < 0) {
-		ns.tprintf("ERROR    level has to be larger than 0!");
+		ns.tprintf('ERROR    level has to be larger than 0!');
 		ns.exit();
 	}
 
@@ -55,6 +55,6 @@ export async function main(ns) {
 		if (level > 0 && ns.getServerRequiredHackingLevel(server) > level)
 			continue;
 		let pid = ns.exec(SCRIPT, HOME, 1, server);
-		ns.tprintf("INFO     started smarthack: " + server + " (PID " + pid + ")");
+		ns.tprintf('INFO     started smarthack: ' + server + ' (PID ' + pid + ')');
 	}
 }
