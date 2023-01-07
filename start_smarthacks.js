@@ -47,12 +47,12 @@ export async function main(ns) {
 		ns.exit();
 	}
 
-	var levelLimit = data.level;
+	var level = data.level == 0 ? Math.floor(1 + ns.getHackingLevel() * 0.35) : data.level;
 	let servers = getServers(ns);
 	for (const server of servers) {
 		if (ns.isRunning(SCRIPT, HOME, server))
 			continue;
-		if (levelLimit > 0 && ns.getServerRequiredHackingLevel(server) > levelLimit)
+		if (level > 0 && ns.getServerRequiredHackingLevel(server) > level)
 			continue;
 		let pid = ns.exec(SCRIPT, HOME, 1, server);
 		ns.tprintf("INFO     started smarthack: " + server + " (PID " + pid + ")");
