@@ -2,13 +2,6 @@ const ROOT = 'home';
 const DELAY = 1000;
 const MAX_EXPONENT = 20;
 
-function createGUID() {
-	function s4() {
-		return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-	}
-	return (s4() + s4() + '-' + s4() + '-4' + s4().substring(0, 3) + '-' + s4() + '-' + s4() + s4() + s4()).toLowerCase();
-}
-
 /** 
  * @param {NS} ns 
  * @param {number} ram
@@ -20,16 +13,16 @@ function ramFormat(ns, ram) {
 /** @param {NS} ns */
 export async function main(ns) {
 	var data = ns.flags([
-		["exponent", 1],
-		["delay", 5000],
+		['exponent', 1],
+		['delay', 5000],
 	]);
 
 	if (data.exponent < 1 || data.exponent > 20) {
-		ns.tprint("ERROR   exponent has to be a number between 1 and 20!");
+		ns.tprint('ERROR   exponent has to be a number between 1 and 20!');
 		ns.exit();
 	}
 	if (data.delay < 0) {
-		ns.tprint("ERROR   delay must be greater than 0!");
+		ns.tprint('ERROR   delay must be greater than 0!');
 		ns.exit();
 	}
 
@@ -40,16 +33,16 @@ export async function main(ns) {
 	var servers = ns.getPurchasedServers();
 	var cost = ns.getPurchasedServerCost(ram);
 	
-	let counter = 0;
+	let counter = servers.length;
 	while (servers.length < ns.getPurchasedServerLimit()) {
 		counter += 1;
 		while (ns.getServerMoneyAvailable(ROOT) < cost)
 			await ns.sleep(DELAY);
 		// let name = createGUID();
-		let name = ".server_" + ns.nFormat(counter, '000');
+		let name = '.server_' + ns.nFormat(counter, '00');
 		ns.purchaseServer(name, ram);
 		servers.push(name);
-		ns.toast("Purchased " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO, 5000);
+		ns.toast('Purchased ' + name + ' ' + ramFormat(ns, ram), ns.enums.ToastVariant.INFO, 5000);
 		await ns.sleep(delay);
 	}
 
@@ -67,7 +60,7 @@ export async function main(ns) {
 			while (ns.getServerMoneyAvailable(ROOT) < cost)
 				await ns.sleep(DELAY);
 			ns.upgradePurchasedServer(server, ram);
-			ns.toast("Upgraded " + server + " -> " + ramFormat(ns, ram), ns.enums.ToastVariant.INFO, 5000);
+			ns.toast('Upgraded ' + server + ' -> ' + ramFormat(ns, ram), ns.enums.ToastVariant.INFO, 5000);
 			await ns.sleep(delay);
 		}
 	}
