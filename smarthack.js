@@ -80,15 +80,9 @@ function execute(ns, script, target, threads, delay) {
  * */
 export async function delay(ns, message, delay, target) {
 	const STEP = 1000;
-	// const MONEY_TEXT = " | " + ns.nFormat(ns.getServerMaxMoney(target), "$(0.000)a");
-	// const SECURITY_TEXT = " | " + ns.nFormat(ns.getServerMinSecurityLevel(target), "0.000");
 	while (delay > 0) {
 		ns.clearLog();
-		// let money = ns.getServerMoneyAvailable(target);
-		// let security = ns.getServerSecurityLevel(target);
 		ns.print(target);
-		// ns.print(ns.nFormat(money, "$(0.000)a") + MONEY_TEXT);
-		// ns.print(ns.nFormat(security, "0.000") + SECURITY_TEXT);
 		ns.print(message);
 		ns.print(ns.tFormat(delay));
 		delay -= STEP;
@@ -150,27 +144,25 @@ export async function main(ns) {
 		let time = ns.getWeakenTime(target);
 
 		let grow_threads = Math.floor(1 + ns.growthAnalyze(target, MONEY_MAX / money));
-		let hack_threads = Math.floor(1 + 0.6 / ns.hackAnalyze(target));
+		let hack_threads = Math.floor(1 + 0.75 / ns.hackAnalyze(target));
 		let weaken_threads = Math.floor(1 + (grow_threads * 0.004 + hack_threads * 0.002) / 0.05);
 
-		let rest = 0;
-		let message = "weaken | grow | hack\n  ";
-		rest = execute(ns, WEAKEN_SCRIPT, target, weaken_threads, 0);
-		message += ns.nFormat((weaken_threads - rest) / weaken_threads, '000%') + " | ";
+		execute(ns, WEAKEN_SCRIPT, target, weaken_threads, 0);
+		execute(ns, GROW_SCRIPT, target, grow_threads, 0);
+		execute(ns, HACK_SCRIPT, target, hack_threads, time * 0.6);
 
-		rest = execute(ns, GROW_SCRIPT, target, grow_threads, 0);
-		message += ns.nFormat((grow_threads - rest) / grow_threads, '000%') + " | ";
-
-		rest = execute(ns, HACK_SCRIPT, target, hack_threads, time * 0.6);
-		message += ns.nFormat((hack_threads - rest) / hack_threads, '000%') + "\n";
-
-		await delay(ns, message + "grow", time * 0.8, target);
-		// money = ns.getServerMoneyAvailable(target);
-		await delay(ns, message + "hack", time * 0.05, target);
-		// let hacked_money = money - ns.getServerMoneyAvailable(target);
-		// if (hacked_money > 0)
-		// 	ns.tprintf("SUCCESS  " + ns.nFormat(hacked_money, "$(0.000)a") + " -> " + target);
-		await delay(ns, message + "weaken", time * 0.15, target);
+		await delay(ns, "grow", time * 0.8, target);
+		money = ns.getServerMoneyAvailable(target);
+		await delay(ns, "hack", time * 0.05, target);
+		let hacked_money = money - ns.getServerMoneyAvailable(target);
+		if (hacked_money > 0) {
+			ns.toast(
+				target + " " + ns.nFormat(hacked_money, "$(0.000)a"),
+				ns.enums.ToastVariant.SUCCESS,
+				5000,
+			);
+		}
+		await delay(ns, "weaken", time * 0.15, target);
 		await ns.sleep(1000);
 	}
 }
