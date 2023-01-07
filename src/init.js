@@ -1,20 +1,36 @@
-const HOME = 'home';
-const REPO = "https://raw.githubusercontent.com/BaySiyah/Bitburner/main"
+const ROOT = 'home';
+const REPO = 'https://raw.githubusercontent.com/BaySiyah/Bitburner/main'
 
 /** @param {NS} ns */
 export async function main(ns) {
 
-	ns.wget(REPO + "/scripts/grow.js", "/scripts/grow.js", HOME)
-	ns.wget(REPO + "/scripts/hack.js", "/scripts/hack.js", HOME)
-	ns.wget(REPO + "/scripts/share.js", "/scripts/share.js", HOME)
-	ns.wget(REPO + "/scripts/weaken.js", "/scripts/weaken.js", HOME)
+	var files = [
+		'scripts/grow.js',
+		'scripts/hack.js',
+		'scripts/share.js',
+		'scripts/weaken.js',
+		'buyServers.js',
+		'hacknet.js',
+		'killAllScripts.js',
+		'monitor.js',
+		'root.js',
+		'simplehack.js',
+		'smarthack.js',
+		'share.js',
+		'start_smarthacks.js',
+	]
 
-	ns.wget(REPO + "/buyServers.js", "buyServers.js", HOME)
-	ns.wget(REPO + "/hacknet.js", "hacknet.js", HOME)
-	ns.wget(REPO + "/killAllScripts.js", "killAllScripts.js", HOME)
-	ns.wget(REPO + "/root.js", "root.js", HOME)
-	ns.wget(REPO + "/simplehack.js", "simplehack.js", HOME)
-	ns.wget(REPO + "/smarthack.js", "smarthack.js", HOME)
-	ns.wget(REPO + "/start_share.js", "start_share.js", HOME)
-	ns.wget(REPO + "/start_smarthacks.js", "start_smarthacks.js", HOME)
+	ns.tprintf('downloading files from ' + REPO);
+	for (const file of files) {
+		let source = file;
+		let target = file;
+		if (file.includes('/'))
+			target = '/' + file
+
+		if (ns.fileExists(target, ROOT))
+			ns.rm(target, ROOT);
+		ns.wget(REPO + source, target, ROOT);
+		ns.tprintf('  -> ' + file);
+		ns.tprintf('SUCCESS  downloaded ' + files.length + ' file(s)');
+	}
 }
